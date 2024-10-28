@@ -41,6 +41,10 @@ mTLS stands for 'mutual Transport Layer Security'. In a nutshell, it is the same
 
 6. If both the client and server can verify the certificate, the initiate a cryptographic exchange of information using the Diffie-Hellman key exchange algorithm.
 
+You can see how this works in the following diagram.
+
+![](./mTLS-diagram.png)
+
 
 ## TLS vs. mTLS
 
