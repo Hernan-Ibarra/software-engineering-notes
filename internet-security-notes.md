@@ -4,7 +4,7 @@ In these notes we provide a short description of the mTLS protocol. This is very
 
 ## What is TLS?
 
-TLS stands for 'Transport Layer Security'. It is a protocol (i.e. a collection of procedures) for transmitting data over a computer network in a secure manner. It can be used in conjunction with other internet protocols such as TCP (in fact, this is what HTTP/1.1 and HTTP/2 does). This added layer of security uses encryption to guarantee that communication between computers cannot be intercepted by malicious actors (think your bank details being compromised when banking online); also, from a client perspective, it are makes sure the server is actually who they say they are (think someone impersonating your bank's website).  
+TLS stands for 'Transport Layer Security'. It is a protocol (i.e. a collection of procedures) for transmitting data over a computer network in a secure manner. It can be used in conjunction with other internet protocols such as TCP (in fact, this is what HTTP/1.1 and HTTP/2 does). This added layer of security uses encryption to guarantee that communication between computers cannot be intercepted by malicious actors (think your bank details being compromised when banking online); also, from a client perspective, it makes sure the server is actually who they say they are (think someone impersonating your bank's website).  
 
 ### How does it work?
 
