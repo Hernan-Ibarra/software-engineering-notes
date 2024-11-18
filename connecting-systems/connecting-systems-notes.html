@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>connecting-systems-notes</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <script type="text/javascript" src="https://livejs.com/live.js"></script>
+</head>
+<body>
+<h1 id="notes-on-http1.1">Notes on HTTP/1.1</h1>
+<h2 id="what-is-http">What is HTTP?</h2>
+<p>HTTP stands for (H)yper (T)ext (T)ransfer (P)rotocol. It is a set of
+rules and procedures (i.e. a protocol) for sending and requesting data
+over the internet. Here ‘data’ could mean a variety of things, most
+commonly HTML files, but also images, text, and other kinds of
+media.</p>
+<p>Since the creation of the HTTP in the 90s, it has undergone constant
+revisions and updates. Different versions and variants of the protocol
+exist. As of 2024, we have HTTP/1.1, HTTP/2, and HTTP/3 as the main
+non-obsolete versions. A popular alternative to HTTP is HTTPS, a secure
+variant of the protocol, where data transfer happens by means of
+encryption.</p>
+<p>In these notes we focus on HTTP/1.1, which is the oldest still-in-use
+version of HTTP.</p>
+<h2 id="how-does-http-work">How does HTTP work?</h2>
+<p>Oversimplifying, the client tries to establish a connection with the
+server. After the server accepts this, it waits for a request message
+from the client. All data is transferred via request-response messages.
+Once the server gets a request message it sends data to the client; this
+usually consists of a <em>header</em>, which contains information about
+the message and the request, and a <em>body</em> with the actual
+data.</p>
+<p>One of the main differences between HTTP/1.1 and its predecessors, is
+its keep-alive-mechanism. This means that after the request-response
+transaction is finished, the server doesn’t end the connection but
+rather keeps it open in case there are further requests, hence
+optimizing how the speed at which the client gets data from its request:
+it is not necessary that they connect and disconnect to the server
+constantly.</p>
+<h3 id="methods">Methods</h3>
+<p>Requests from the client to the server come in different types. HTTP
+standarized different types of requests using <em>methods</em> which we
+now describe. A method is a specifc keyword or function that announces
+the kind of request the client makes to the server. Here are some
+examples.</p>
+<ul>
+<li><p>The most fundamental method is <strong>GET</strong>. By using the
+<strong>GET</strong> method, the client announces that it wants to be
+sent a specific resource, say an HTML file, from the server.</p></li>
+<li><p>If the client wants to send data and request it be stored in a
+particular location on the server-side (creating a new file, or
+replacing an existing file if necessary), the client will use the
+<strong>PUT</strong> method.</p></li>
+<li><p>On the other hand, if the client wants to delete a file on the
+server-side we are looking at the <strong>DELETE</strong>
+method.</p></li>
+</ul>
+<p>One example of a method that is exclusive to versions 1.1 and newer
+is the <strong>OPTIONS</strong> method, which asks the server which
+operations/requests it is willing to accept.</p>
+<h3 id="status-codes">Status codes</h3>
+<p>We have talked about how the client communicates with the server.
+What about the other way around? HTTP has designated <em>status
+codes</em> that the server sends to the client to indicate how the
+server is handling requests.</p>
+<p>There are many codes, but they are subdivided into 5 categories:</p>
+<ul>
+<li><p><strong>1xx: Informational</strong>: These codes are just meant
+to convey that the request is being processed. Here HTTP/1.1 introduced
+the request code <strong>100 Continue</strong>. This is used when the
+server is not certain it can process requests, maybe due to their size,
+or because they lack the right authorizations. In such cases the client
+can send only the headers of their request, without the body. If the
+server thinks the request is OK they send the code 100 to ask the user
+to <em>continue</em> and send the body of the original request.</p></li>
+<li><p><strong>2xx: Success</strong>: These are used when the server
+wants to communicate that a previous client request was handled
+successfully.</p></li>
+<li><p><strong>3xx: Redirection</strong>: When the server cannot process
+the request without further action, it sends a 3xx code.</p></li>
+<li><p><strong>4xx: Client Error</strong>: If the server is unhappy with
+the request, and thinks its the client’s fault, it gives one of the 4xx
+codes, the most famous one of these being, of course, <strong>404 Not
+Found</strong>.</p></li>
+<li><p><strong>5xx: Sever Error</strong>: If the server is unhappy with
+the request, but it is the server’s fault, one of the 5xx codes is
+used.</p></li>
+</ul>
+<h2 id="other-differences">Other differences</h2>
+<p>One of the main differences between HTTP/1.1 and its predecessors is
+the ability to do <em>chunked transfer encoding</em>. This means that
+the content transfer in the client-server model is done in
+<em>chunks</em>, i.e. in small parts at the time. This way of streaming
+information means that the server doesn’t need to know the size of the
+data in advance, because it is being dynamically generated.</p>
+</body>
+</html>

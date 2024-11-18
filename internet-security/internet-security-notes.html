@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>internet-security-notes</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <script type="text/javascript" src="https://livejs.com/live.js"></script>
+</head>
+<body>
+<h1 id="internet-security-mtls">Internet Security: mTLS</h1>
+<p>In these notes we provide a short description of the mTLS protocol.
+This is very similar to the TLS protocol, so we first recap how that
+works. Afterwards we outline the main differences between mTLS and TLS.
+Finally, we provide some examples of situations where using mTLS is
+preferable over TLS.</p>
+<h2 id="what-is-tls">What is TLS?</h2>
+<p>TLS stands for ‘Transport Layer Security’. It is a protocol (i.e. a
+collection of procedures) for transmitting data over a computer network
+in a secure manner. It can be used in conjunction with other internet
+protocols such as TCP (in fact, this is what HTTP/1.1 and HTTP/2 does).
+This added layer of security uses encryption to guarantee that
+communication between computers cannot be intercepted by malicious
+actors (think your bank details being compromised when banking online);
+also, from a client perspective, it makes sure the server is actually
+who they say they are (think someone impersonating your bank’s
+website).</p>
+<h3 id="how-does-it-work">How does it work?</h3>
+<p>At a high level:</p>
+<ol type="1">
+<li><p>Client requests a secure connection to be established.</p></li>
+<li><p>Server acknowledges the request, and provides identification,
+usually as a <em>digital certificate</em>. This certificate details who
+the server is and the <em>Certificate Authority (CA)</em>—a trusted
+third party who can vouch for the certificate.</p></li>
+<li><p>Client verifies the certificate.</p></li>
+<li><p>If the client thinks the certificate is valid, it initiates a
+cryptographic exchange of information using the Diffie-Hellman key
+exchange algorithm.</p></li>
+</ol>
+<p>Obviously there is more to be said about</p>
+<ul>
+<li>how the client verifies the certificate, and</li>
+<li>how the Diffie-Hellman protocol is implemented.</li>
+</ul>
+<p>This requires a separate discussion on basic cryptography, and the
+details are not actually necessary to understand the difference between
+mTLS and TLS. Hence we will move on with this description.</p>
+<h2 id="what-is-mtls">What is mTLS?</h2>
+<p>mTLS stands for ‘mutual Transport Layer Security’. In a nutshell, it
+is the same protocol as TLS but the client has to authenticate its
+identity to the server (in TLS only the server has to authenticate its
+identity to the client). Explicitly, we add some steps to the TLS
+protocol as follows:</p>
+<ol type="1">
+<li><p>Client requests a secure connection to be established.</p></li>
+<li><p>Server acknowledges the request, and provides identification, in
+form of a digital certificate.</p></li>
+<li><p>Client verifies the certificate.</p></li>
+<li><p>Client provides identification, in form of a digital
+certificate</p></li>
+<li><p>Server verifies the certificate</p></li>
+<li><p>If both the client and server can verify the certificate, the
+initiate a cryptographic exchange of information using the
+Diffie-Hellman key exchange algorithm.</p></li>
+</ol>
+<p>You can see how this works in the following diagram.</p>
+<p><img src="./mTLS-diagram.png" /></p>
+<h2 id="tls-vs.-mtls">TLS vs. mTLS</h2>
+<p>Reasons to prefer TLS:</p>
+<ul>
+<li><p>The protocol has less steps and is therefore is faster when
+implemented.</p></li>
+<li><p>For most purposes, the one-way authentication used by TLS is
+sufficient.</p></li>
+<li><p>In large networks, it would be very difficult to provide all
+clients with a verifiable certificate.</p></li>
+</ul>
+<p>Why use mTLS:</p>
+<ul>
+<li><p>Communication between businesses. This usually happens in a small
+network and the users are <em>homogeneous</em>, i.e., there is no
+significant way to divide the users into clients and servers.
+Furthermore, security is a big concern in this context.</p></li>
+<li><p>Protection against credential stuffing in high security
+environments. Hypothetical: suppose you work at a large company handling
+sensitive data. Further suppose that your login details to your
+company’s network were compromised, and a malicious actor is trying to
+use them to impersonate you. If the company uses mTLS then this wouldn’t
+be possible without also having access to your computer. Even if your
+login details were not compromised, but a cyber attack was taking place
+using bots to guess your password, the password would not be enough to
+impersonate you.</p></li>
+</ul>
+</body>
+</html>
