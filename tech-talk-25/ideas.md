@@ -74,6 +74,7 @@
 - Twitter -> X. Facebook -> Metaverse.
 - Need for decentralization.
 - How a unified protocol can make this happen (enter ActivityPub)
+- Now all social media can talk to each other using the same language
 - What instances are and how they work.
 
 ## How 1 engineer outperforms 138: A History of Lichess
