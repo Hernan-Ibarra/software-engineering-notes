@@ -2,9 +2,11 @@
 
 These notes were taken while reading the book [Pro Git](https://git-scm.com/book/en/v2) by Scott Chacon & Ben Straub. This is not meant to be an introduction to git (for that read the book), but rather a 'cheatsheet' that I can refer back to.
 
-Date: Sun 19 Jan 2025 09:19:49 GMT
+Mon 17 Feb 2025 17:44:58 GMT
 
-## First-Time Git Setup
+## Getting started
+
+### First-Time Git Setup
 
 Config file lives in ~/.gitconfig or ~/.config/git/config. This is user-wide (system-wide in /etc/gitconfig). For repository-specific config use .git/config. More specific config overrides more general ones.
 
@@ -24,7 +26,7 @@ git config --global user.name "John Doe"
 git config --global user.email johndoe@example.com
 ```
 
-## Getting Help
+### Getting Help
 
 If you are unsure of any git command, use the following.
 
@@ -33,4 +35,8 @@ git help <verb>   # Open man-page of <verb>
 git <verb> -h     # Display a summary of man-page
 ```
 
-## Getting a Git Repository
+## Git Basics
+
+### Getting a Git Repository
+
+You can get a repository by either creating a new one from a existing directory or cloning one from somewhere else.
