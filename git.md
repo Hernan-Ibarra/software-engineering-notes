@@ -2,7 +2,8 @@
 
 These notes were taken while reading the book [Pro Git](https://git-scm.com/book/en/v2) by Scott Chacon & Ben Straub. This is not meant to be an introduction to git (for that read the book), but rather a 'cheatsheet' that I can refer back to.
 
-Mon 17 Feb 2025 17:44:58 GMT
+Last modified:
+Fri 28 Mar 2025 08:09:52 GMT
 
 ## Getting started
 
@@ -40,3 +41,26 @@ git <verb> -h     # Display a summary of man-page
 ### Getting a Git Repository
 
 You can get a repository by either creating a new one from a existing directory or cloning one from somewhere else.
+
+#### Initializing a repository
+
+Starting a new project looks like this
+
+```bash
+mkdir my-new-website
+cd my-new-website
+git init
+```
+
+This creates a new hidden subdirectory `.git` that git uses to keep information about your project.
+
+If your project already existed and you want to start tracking with git you can do.
+
+```bash
+cd my-existing-website
+git init
+git add .
+git commit -m "Initial commit"
+```
+
+
